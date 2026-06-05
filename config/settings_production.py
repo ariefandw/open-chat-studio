@@ -59,6 +59,11 @@ match EMAIL_BACKEND:
             "AMAZON_SES_CLIENT_PARAMS": dict(item for item in ses_params.items() if item[1]),
             "WEBHOOK_SECRET": _ANYMAIL_WEBHOOK_SECRET,
         }
+    case "anymail.backends.resend.EmailBackend":
+        ANYMAIL = {
+            "RESEND_API_KEY": env("RESEND_API_KEY", default=None),
+            "WEBHOOK_SECRET": _ANYMAIL_WEBHOOK_SECRET,
+        }
     case _:
         raise Exception(f"Unknown email backend: {EMAIL_BACKEND}")
 
