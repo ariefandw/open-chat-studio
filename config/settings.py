@@ -378,13 +378,16 @@ if USE_S3_STORAGE:
     AWS_S3_REGION_NAME = AWS_S3_REGION
 
     # S3 options for custom endpoints
+    # addressing_style: "path" for path-style, "virtual" for virtual-hosted style
+    addressing_style = "path" if AWS_S3_USE_PATH_STYLE else "auto"
+
     s3_options = {
         "bucket_name": env("AWS_PRIVATE_STORAGE_BUCKET_NAME"),
         "location": "resources",
+        "addressing_style": addressing_style,
     }
     if AWS_S3_ENDPOINT_URL:
         s3_options["endpoint_url"] = AWS_S3_ENDPOINT_URL
-    s3_options["use_path_style"] = AWS_S3_USE_PATH_STYLE
 
     # use private storage by default
     STORAGES["default"] = {  # ty: ignore[invalid-assignment]
@@ -405,10 +408,10 @@ if USE_S3_STORAGE:
     public_s3_options = {
         "bucket_name": AWS_PUBLIC_STORAGE_BUCKET_NAME,
         "location": PUBLIC_MEDIA_LOCATION,
+        "addressing_style": addressing_style,
     }
     if AWS_S3_ENDPOINT_URL:
         public_s3_options["endpoint_url"] = AWS_S3_ENDPOINT_URL
-    public_s3_options["use_path_style"] = AWS_S3_USE_PATH_STYLE
 
     STORAGES["public"] = {  # ty: ignore[invalid-assignment]
         "BACKEND": "apps.web.storage_backends.PublicMediaStorage",
