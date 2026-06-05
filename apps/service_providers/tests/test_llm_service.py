@@ -55,10 +55,11 @@ def test_openai_service_uses_responses_api():
     [
         (LlmProviderTypes.groq, {"openai_api_key": "test"}),
         (LlmProviderTypes.perplexity, {"openai_api_key": "test"}),
+        (LlmProviderTypes.openrouter, {"openai_api_key": "test"}),
     ],
 )
 def test_generic_openai_service_does_not_use_responses_api(provider_type, config):
-    """Generic OpenAI-compatible providers (Groq, Perplexity) must not use the Responses API
+    """Generic OpenAI-compatible providers (Groq, Perplexity, OpenRouter) must not use the Responses API
     as it is an OpenAI-specific endpoint that returns 404 on third-party providers."""
     service = provider_type.get_llm_service(config)
     assert isinstance(service, OpenAIGenericService)

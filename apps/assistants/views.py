@@ -49,7 +49,10 @@ class OpenAiAssistantHome(LoginAndTeamRequiredMixin, PermissionRequiredMixin, Te
     def get_context_data(self, team_slug: str, **kwargs):  # ty: ignore[invalid-method-override]
         has_providers = get_llm_providers_for_assistants(self.request.team).exists()
         if not has_providers:
-            messages.warning(self.request, "You need to add an OpenAI LLM provider before you can create an assistant.")
+            messages.warning(
+                self.request,
+                "OpenAI Assistants require an OpenAI provider. For other providers (OpenRouter, Anthropic, etc.), use Pipelines instead."
+            )
         return {
             "active_tab": "assistants",
             "title": "OpenAI Assistants",
