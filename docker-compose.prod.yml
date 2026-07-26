@@ -43,7 +43,7 @@ services:
   redis:
     image: redis:7
     restart: unless-stopped
-    command: redis-server --appendonly yes
+    command: sh -c "rm -rf /data/appendonlydir /data/dump.rdb && exec docker-entrypoint.sh redis-server --appendonly yes"
     volumes:
       - redis_data:/data
     healthcheck:
